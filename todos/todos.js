@@ -69,6 +69,11 @@ logoutButton.addEventListener('click', () => {
 
 deleteButton.addEventListener('click', async () => {
     // delete all todos
+    await deleteAllTodos();
     // modify state to match
+    todoArray = [];
     // re displayTodos
+    displayTodos();
 });
+
+displayTodos();
