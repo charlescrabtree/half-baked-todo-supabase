@@ -10,7 +10,8 @@ import { renderTodo } from '../render-utils.js';
 
 checkAuth();
 
-let todoArray = [];
+// create todo state
+// let todoArray = [];
 
 const todosEl = document.querySelector('.todos');
 const todoForm = document.querySelector('.todo-form');
@@ -22,45 +23,46 @@ todoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(todoForm);
     const todo = data.get('todo');
-    console.log(todo);
 
-    const newTodo = await createTodo(todo);
-    todoArray.push(newTodo);
-    console.log(todoArray);
+    await createTodo(todo);
+    
     todoForm.reset();
 
     displayTodos();
 });
 
-// create todo state
+
 
 // add async complete todo handler function
-    // call completeTodo
+async function handleComplete(todo) {
+    await completeTodo(todo.id);
     // swap out todo in array
     // call displayTodos
-
+    displayTodos();
+}
 
 
 async function displayTodos() {
     // clear the container (.innerHTML = '')
+    todosEl.innerHTML = '';
     const todos = await getTodos();
-    // display the list of todos, 
-    todosEl.textContent = '';
     for (let todo of todos) {
-        const renderedTodo = renderTodo(todo);
-        renderedTodo.addEventListener('click', () => {
-            completeTodo(todo.id);
-            
-        });
-        todosEl.append(renderedTodo);
+        const todoList = renderTodo(todo, handleComplete);
+        todosEl.append(todoList);
     }
           // call render function, pass in state and complete handler function!
           // append to .todos
 }
 
 // add page load function
+async function onLoad() {
+    await getTodos();
+    displayTodos();
+    handleComplete();
+}
     // fetch the todos and store in state
     // call displayTodos
+onLoad();
 
 logoutButton.addEventListener('click', () => {
     logout();
@@ -71,9 +73,7 @@ deleteButton.addEventListener('click', async () => {
     // delete all todos
     await deleteAllTodos();
     // modify state to match
-    todoArray = [];
     // re displayTodos
     displayTodos();
 });
 
-displayTodos();
