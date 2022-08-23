@@ -13,18 +13,28 @@ export async function createTodo(todo) {
             user_id: client.auth.user().id,
         })
         .single();
-        
+
     return checkError(response);
 }
 
 export async function deleteAllTodos() {
     // delete all todos for this user in supabase
-
+    const response = await client
+        .from('todos')
+        .delete()
+        .match({
+            user_id: client.auth.user().id,
+        });
     return checkError(response);
 }
 
 export async function getTodos() {
     // get all todos for this user from supabase
+    const response = await client
+        .from('todos')
+        .select()
+        .order('complete')
+        .match({ user_id: client.auth.user().id, });
 
     return checkError(response);
 }
