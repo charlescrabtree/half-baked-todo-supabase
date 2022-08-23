@@ -10,7 +10,6 @@ export function renderTodo(todo, handleComplete) {
     p.textContent = todo.todo;
     // append stuff
     div.append(p);
-    console.log(todo);
     // add event listener for click and call handleComplete function
     div.addEventListener('click', () => {
         handleComplete();
