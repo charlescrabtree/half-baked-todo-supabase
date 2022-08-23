@@ -58,7 +58,6 @@ async function displayTodos() {
 async function onLoad() {
     await getTodos();
     displayTodos();
-    handleComplete();
 }
     // fetch the todos and store in state
     // call displayTodos
